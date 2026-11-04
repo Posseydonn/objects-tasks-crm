@@ -22,4 +22,3 @@ $report | Add-Member -NotePropertyName supplemental -NotePropertyValue @{verifie
 $report|ConvertTo-Json -Depth 10|Set-Content docs/database-verification.json -Encoding utf8
 Write-Output ('SUPPLEMENTAL PASS: '+$checks.Count)
 } finally { $null=Send-Crm '/auth/v1/logout' $mt 'POST' @{};$null=Send-Crm '/auth/v1/logout' $et 'POST' @{} }
-

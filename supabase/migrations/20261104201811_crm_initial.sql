@@ -171,4 +171,3 @@ revoke all on all functions in schema private from public,anon,authenticated;
 grant execute on function private.is_manager(), private.can_read_task(uuid), private.can_read_object(uuid), private.can_read_profile(uuid) to authenticated;
 revoke all on function public.create_object(text,text), public.update_object(uuid,text,text), public.delete_object(uuid), public.create_task(text,text,uuid,uuid), public.update_task(uuid,text,text,uuid,uuid), public.delete_task(uuid), public.change_task_status(uuid,text,text) from public,anon,authenticated;
 grant execute on function public.create_object(text,text), public.update_object(uuid,text,text), public.delete_object(uuid), public.create_task(text,text,uuid,uuid), public.update_task(uuid,text,text,uuid,uuid), public.delete_task(uuid), public.change_task_status(uuid,text,text) to authenticated;
-

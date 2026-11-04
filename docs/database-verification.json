@@ -110,7 +110,7 @@
     ]
   },
   "migration_replay": {
-    "verified_at": "2026-11-04T20:46:30.711Z",
+    "verified_at": "2026-11-04T20:47:07.768Z",
     "engine": "PGlite 0.5.15 (PostgreSQL WASM); fresh in-memory databases with minimal Supabase auth scaffolding",
     "command": "npm ci --prefix supabase/tests && npm test --prefix supabase/tests",
     "fresh_database_scenarios": 2,
@@ -120,7 +120,7 @@
     "migrations": [
       {
         "file": "20261104201811_crm_initial.sql",
-        "sha256": "42def8614240b95b4b0830d12dbd17e11f8cea939c49d8559ab71f5743144db9"
+        "sha256": "beddede0813b7a01434e2d92660721491d5a86ca59083973e81bd7d572bd01d2"
       },
       {
         "file": "20261104201920_restrict_internal_rls_trigger.sql",
