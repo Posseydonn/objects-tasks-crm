@@ -7,8 +7,10 @@ body { background: #f5f6f8; }
 .workspace { min-height: 100dvh; }
 .brand { padding: 24px 20px; font-size: 17px; font-weight: 600; }
 .workspace-header { background: white; padding: 0 24px; display: flex; align-items: center; justify-content: space-between; gap: 16px; border-bottom: 1px solid #eee; }
+.workspace-account { min-width: 0; flex: 1; }
+.workspace-sider-mobile { position: fixed !important; top: 64px; bottom: 0; left: 0; z-index: 20; overflow: hidden; }
 .workspace-content { padding: 32px; min-width: 0; }
 .workspace-content section { background: white; padding: 24px; border-radius: 8px; overflow-x: auto; }
 .loading { min-height: 100dvh; display: grid; place-items: center; }
 .loading-inner { width: 200px; height: 80px; }
-@media (max-width: 600px) { .workspace-content { padding: 16px; } .workspace-header { padding: 0 16px 0 48px; } .login { padding: 16px; } }
+@media (max-width: 600px) { .workspace-content { padding: 16px; } .workspace-header { padding: 0 16px; gap: 12px; } .login { padding: 16px; } }

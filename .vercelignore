@@ -1,0 +1,10 @@
+.git/
+node_modules/
+dist/
+.env
+.env.*
+*.local
+**/*.local
+.agent3-preview.local/
+.playwright-cli/
+output/
