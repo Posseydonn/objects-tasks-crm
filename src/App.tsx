@@ -32,7 +32,7 @@ function ProtectedLayout() {
 export default function App() {
   const { loading, error } = useAuth();
   if (configurationError) return <Result status="warning" title="Подключение не настроено" subTitle={configurationError} />;
-  if (loading) return <div className="loading"><Spin size="large" tip="Проверяем вход…"><div className="loading-inner" /></Spin></div>;
+  if (loading) return <div className="loading"><Spin size="large" description="Проверяем вход…"><div className="loading-inner" /></Spin></div>;
   if (error) return <Alert type="error" title={error} action={<Button onClick={() => window.location.reload()}>Повторить</Button>} />;
   return <Routes>
     <Route path="/login" element={<LoginPage />} />
@@ -46,3 +46,4 @@ export default function App() {
     <Route path="*" element={<Result status="404" title="Страница не найдена" extra={<Link to="/">На главную</Link>} />} />
   </Routes>;
 }
+
