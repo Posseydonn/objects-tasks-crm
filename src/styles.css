@@ -1,0 +1,14 @@
+html, body, #root { margin: 0; min-height: 100%; }
+body { background: #f5f6f8; }
+.login { min-height: 100dvh; display: grid; place-items: center; padding: 24px; }
+.login-card { width: 100%; max-width: 440px; }
+.login-help { margin: 24px 0 0; }
+.notice { margin-bottom: 20px; }
+.workspace { min-height: 100dvh; }
+.brand { padding: 24px 20px; font-size: 17px; font-weight: 600; }
+.workspace-header { background: white; padding: 0 24px; display: flex; align-items: center; justify-content: space-between; gap: 16px; border-bottom: 1px solid #eee; }
+.workspace-content { padding: 32px; min-width: 0; }
+.workspace-content section { background: white; padding: 24px; border-radius: 8px; overflow-x: auto; }
+.loading { min-height: 100dvh; display: grid; place-items: center; }
+.loading-inner { width: 200px; height: 80px; }
+@media (max-width: 600px) { .workspace-content { padding: 16px; } .workspace-header { padding: 0 16px 0 48px; } .login { padding: 16px; } }

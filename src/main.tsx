@@ -1,0 +1,10 @@
+import { StrictMode } from 'react';
+import { createRoot } from 'react-dom/client';
+import { BrowserRouter } from 'react-router-dom';
+import { App as AntApp, ConfigProvider } from 'antd';
+import ruRU from 'antd/locale/ru_RU';
+import { AuthProvider } from './auth/AuthProvider';
+import App from './App';
+import 'antd/dist/reset.css';
+import './styles.css';
+createRoot(document.getElementById('root')!).render(<StrictMode><ConfigProvider locale={ruRU} theme={{ token: { colorPrimary: '#1677ff', borderRadius: 8 } }}><AntApp><BrowserRouter><AuthProvider><App /></AuthProvider></BrowserRouter></AntApp></ConfigProvider></StrictMode>);
