@@ -16,3 +16,7 @@
 
 ## Агент 1: устранение блокеров
 Git push через явный proxy прошёл. Vercel cloud build выявил Invalid Version в трёх пустых optional-записях lock-файла. Чистая генерация lock в отдельной временной папке и npm ci устранили проблему, deployment READY. Browser login/logout/reload и смена аккаунта проверены на production. Контракт интеграции и src/lib/api.ts готовы для агента 3.
+
+Финальный отчёт дополнен 6 дополнительными проверками: всего 97 PASS. Закрытый provisioning проверен реальным HTTP: 410 под аккаунтом и 401 без авторизации. Повторный безопасный прогон: supabase/tests/hosted-followup.ps1. Основной hosted-security.mjs создаёт демоданные и повторно на существующей базе не запускается.
+
+Миграции: актуальные версии локально и в Supabase — 20261104201811 (crm_initial), 20261104201920 (restrict_internal_rls_trigger). Вторая допускает отсутствие платформенной rls_auto_enable(). Полный replay на двух свежих PGlite-базах и 26 проверок пройдены; схема облака повторно не применялась. Инструкции: supabase/tests/README.md, отчёт: docs/database-verification.json.
