@@ -11,3 +11,7 @@
 Для запуска: npm ci, скопировать .env.example в .env.local и заполнить публичные настройки, npm run dev. Для проверки: npm run build. В браузер передаётся только publishable key; service_role не использовать.
 
 Vercel: framework Vite, build npm run build, output dist. Переменные VITE_SUPABASE_URL и VITE_SUPABASE_PUBLISHABLE_KEY задаются до сборки в настройках проекта. vercel.json содержит SPA fallback для прямых ссылок.
+
+## Проверенный результат этапа A
+Сайт: https://objects-tasks-crm-six.vercel.app. Репозиторий: https://github.com/Posseydonn/objects-tasks-crm (приватный). npm ci и npm run build проходят локально и на Vercel. Публичные переменные окружения сохранены в production.
+В браузере проверены вход постановщиком и исполнителем, выход, сохранение сессии после reload, возврат на исходную прямую ссылку. Четыре тестовых аккаунта проверены через Auth API. Секретные тестовые доступы остаются только в игнорируемом локальном файле. Экраны CRM ещё не подключены; этап A не означает готовность MVP.
