@@ -1,3 +1,4 @@
+import { readAll } from './readAll';
 import { supabase } from './supabase';
 import type { CrmObject, Profile, Task, TaskHistory, TaskStatus } from '../types/domain';
 function client() {
@@ -10,17 +11,19 @@ function unwrap<T>({ data, error }: { data: T; error: unknown }): NonNullable<T>
   return data;
 }
 export const api = {
-  async profile(userId: string): Promise<Profile> { return unwrap(await client().from('profiles').select('*').eq('id', userId).single()); },
-  async executors(): Promise<Profile[]> { return unwrap(await client().from('profiles').select('*').eq('role', 'executor').order('full_name')); },
-  async objects(): Promise<CrmObject[]> { return unwrap(await client().from('objects').select('*').is('deleted_at', null).order('created_at', { ascending: false })); },
-  async object(id: string): Promise<CrmObject> { return unwrap(await client().from('objects').select('*').eq('id', id).is('deleted_at', null).single()); },
-  async tasks(objectId?: string): Promise<Task[]> {
-    let query = client().from('tasks').select('*').is('deleted_at', null);
-    if (objectId) query = query.eq('object_id', objectId);
-    return unwrap(await query.order('created_at', { ascending: false }));
+  async profile(userId: string, signal?: AbortSignal): Promise<Profile> { return unwrap(await client().from('profiles').select('*').eq('id', userId).abortSignal(signal ?? new AbortController().signal).single()); },
+  async executors(signal?: AbortSignal): Promise<Profile[]> { return readAll((from, to) => client().from('profiles').select('*').eq('role', 'executor').order('full_name').order('id').range(from, to).abortSignal(signal ?? new AbortController().signal)); },
+  async objects(signal?: AbortSignal): Promise<CrmObject[]> { return readAll((from, to) => client().from('objects').select('*').is('deleted_at', null).order('created_at', { ascending: false }).order('id').range(from, to).abortSignal(signal ?? new AbortController().signal)); },
+  async object(id: string, signal?: AbortSignal): Promise<CrmObject> { return unwrap(await client().from('objects').select('*').eq('id', id).is('deleted_at', null).abortSignal(signal ?? new AbortController().signal).single()); },
+  async tasks(objectId?: string, signal?: AbortSignal): Promise<Task[]> {
+    return readAll((from, to) => {
+      let query = client().from('tasks').select('*').is('deleted_at', null);
+      if (objectId) query = query.eq('object_id', objectId);
+      return query.order('created_at', { ascending: false }).order('id').range(from, to).abortSignal(signal ?? new AbortController().signal);
+    });
   },
-  async task(id: string): Promise<Task> { return unwrap(await client().from('tasks').select('*').eq('id', id).is('deleted_at', null).single()); },
-  async history(id: string): Promise<TaskHistory[]> { return unwrap(await client().from('task_history').select('*').eq('task_id', id).order('created_at').order('id')); },
+  async task(id: string, signal?: AbortSignal): Promise<Task> { return unwrap(await client().from('tasks').select('*').eq('id', id).is('deleted_at', null).abortSignal(signal ?? new AbortController().signal).single()); },
+  async history(id: string, signal?: AbortSignal): Promise<TaskHistory[]> { return readAll((from, to) => client().from('task_history').select('*').eq('task_id', id).order('created_at').order('id').range(from, to).abortSignal(signal ?? new AbortController().signal)); },
   async createObject(name: string, address: string): Promise<CrmObject> { return unwrap(await client().rpc('create_object', { p_name: name, p_address: address })); },
   async updateObject(id: string, name: string, address: string): Promise<CrmObject> { return unwrap(await client().rpc('update_object', { p_object_id: id, p_name: name, p_address: address })); },
   async deleteObject(id: string): Promise<void> { const { error } = await client().rpc('delete_object', { p_object_id: id }); if (error) throw error; },

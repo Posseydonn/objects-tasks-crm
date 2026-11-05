@@ -2,34 +2,21 @@ import { useEffect, useRef, useState } from 'react';
 import type { ReactNode } from 'react';
 import { Alert, Button, Empty, Space, Spin, Table, Tag, Typography } from 'antd';
 import { Link } from 'react-router-dom';
-import { supabase } from '../../lib/supabase';
+import { api } from '../../lib/api';
 import { errorMessage } from '../../lib/errors';
 import { statusLabels } from '../../types/domain';
 import type { CrmObject, Profile, Task, TaskStatus } from '../../types/domain';
 import './crm.css';
 
-// The shared API has no signal parameter; this read-only adapter cancels screen
-// requests without changing the integrator's API or database contract.
 export function screenReads(signal: AbortSignal) {
-  const client = supabase;
-  if (!client) throw new Error('Supabase is not configured');
-  function unwrap<T>({ data, error }: { data: T; error: unknown }): NonNullable<T> {
-    if (error) throw error;
-    if (data == null) throw { code: 'P0002' };
-    return data;
-  }
   return {
-    profile: async (id: string) => unwrap(await client.from('profiles').select('*').eq('id', id).abortSignal(signal).single()),
-    executors: async () => unwrap(await client.from('profiles').select('*').eq('role', 'executor').order('full_name').abortSignal(signal)),
-    objects: async () => unwrap(await client.from('objects').select('*').is('deleted_at', null).order('created_at', { ascending: false }).abortSignal(signal)),
-    object: async (id: string) => unwrap(await client.from('objects').select('*').eq('id', id).is('deleted_at', null).abortSignal(signal).single()),
-    tasks: async (objectId?: string) => {
-      let query = client.from('tasks').select('*').is('deleted_at', null);
-      if (objectId) query = query.eq('object_id', objectId);
-      return unwrap(await query.order('created_at', { ascending: false }).abortSignal(signal));
-    },
-    task: async (id: string) => unwrap(await client.from('tasks').select('*').eq('id', id).is('deleted_at', null).abortSignal(signal).single()),
-    history: async (id: string) => unwrap(await client.from('task_history').select('*').eq('task_id', id).order('created_at').order('id').abortSignal(signal)),
+    profile: (id: string) => api.profile(id, signal),
+    executors: () => api.executors(signal),
+    objects: () => api.objects(signal),
+    object: (id: string) => api.object(id, signal),
+    tasks: (objectId?: string) => api.tasks(objectId, signal),
+    task: (id: string) => api.task(id, signal),
+    history: (id: string) => api.history(id, signal),
   };
 }
 
