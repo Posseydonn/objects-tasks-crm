@@ -8,3 +8,4 @@ dist/
 .agent3-preview.local/
 .playwright-cli/
 output/
+vpn-diagnostics/
